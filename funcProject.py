@@ -288,3 +288,38 @@ def f_rho_s(rs, r1, m1):
   )
 def solve():
     solution = fsolve(equation, .1)
+def plot_halos(mass_range,samp_frac):    
+    import random
+    import math
+    #Index of the halo
+
+    #samp_frac= 5  # percentage
+    i=0
+    col=3
+    fig, ax3 = plt.subplots(nrows=(math.ceil(len(mass_range)/col)), ncols=col,figsize=(18, int(1.5*len(halos))),subplot_kw={'projection': '3d'})
+    #fig = plt.figure(figsize=plt.figaspect(0.5))
+    #ax3 = fig.add_subplot(projection='3d')
+
+    for idx in mass_range:
+        s=cat.halos["npstartA"][idx]
+        M=cat.halos["npoutA"][idx]
+        x_h=cat.halos["x_com"][idx]
+
+    #    x_b=np.array(cat.subsamples['pos'][s:s+M,0])
+    #    y_b=cat.subsamples['pos'][s:s+M,1]
+    #    z_b=cat.subsamples['pos'][s:s+M,2]
+        rand_pos=np.array(random.sample(list(cat.subsamples['pos'][s:s+M]), int(len(cat.subsamples["pos"][s:s+M])*samp_frac/100)))
+        x_b=rand_pos[:,0]
+        y_b=rand_pos[:,1]
+        z_b=rand_pos[:,2]
+        plt.title("Subsample Particles")
+        #ax3.scatter3D(x_b,y_b,z_b,alpha=.1)
+        ax3[int(i/col),int(i%col)].scatter(x_b,y_b,z_b,alpha=.1)
+    #    ax3[int(i/col),int(i%col)].scatter3D(x_h[0],x_h[1],x_h[2])
+    #    ax3[int(i/col),int(i%col)].set_xlabel("x")
+    #    ax3[int(i/col),int(i%col)].set_ylabel("y")
+    #    ax3[int(i/col),int(i%col)].set_zlabel("z")
+        #ax2[int(i/col),int(i%col)].legend(loc='upper right')
+    #    fig.suptitle('Velocity distribution')
+        i=i+1
+    plt.show()
